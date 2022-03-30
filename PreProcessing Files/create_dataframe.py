@@ -21,6 +21,10 @@ for i in range((exp.shape[0])):
     array = np.load(path + file)
     # print(array)
     df = df.append({'path': img_path + str(num) + ".jpg", "label": array}, ignore_index=True)
-    print(df)
+    if i%5000==0:
+        print(df.shape)
 
+print("Saving...")
 df.to_csv(train_path+"data.csv", index=False)
+print("Saved.")
+
