@@ -23,4 +23,4 @@ for i in range((exp.shape[0])):
     df = df.append({'path': img_path + str(num) + ".jpg", "label": array}, ignore_index=True)
     print(df)
 
-df.to_csv(train_path, index=False)
+df.to_csv(train_path+"data.csv", index=False)
