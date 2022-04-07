@@ -49,7 +49,10 @@ validation_generator = val_gen.flow_from_dataframe(valdf, x_col='path', y_col='l
 
 
 def build_model(hp):  
-    
+    """
+    Method used by the tuner to build models
+    param: hp: the hyperparameters
+    """
     # Create the keras model
     model = EfficientNetB0(
     include_top=True,
