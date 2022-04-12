@@ -3,7 +3,7 @@ import numpy as np
 from keras.models import load_model
 from mtcnn.mtcnn import MTCNN
 
-detector = MTCNN()
+#detector = MTCNN()
 
 model=load_model('models/model_file_30epochs.h5')
 
@@ -19,36 +19,35 @@ while True:
 
     faces= faceDetect.detectMultiScale(gray, 1.3, 3)
 
-    half = cv2.pyrDown(frame)
-    faces = detector.detect_faces(frame)
-    # for x,y,w,h in faces:
+    #half = cv2.pyrDown(frame)
+    #faces = detector.detect_faces(frame)
+    for x,y,w,h in faces:
+         sub_face_img=gray[y:y+h, x:x+w]
+         resized=cv2.resize(sub_face_img,(48,48))
+         normalize=resized/255.0
+         reshaped=np.reshape(normalize, (1, 48, 48, 1))
+         result=model.predict(reshaped)
+         label=np.argmax(result, axis=1)[0]
+         cv2.rectangle(frame, (x,y), (x+w, y+h), (0,0,255), 1)
+         cv2.rectangle(frame,(x,y),(x+w,y+h),(50,50,255),2)
+         cv2.rectangle(frame,(x,y-40),(x+w,y),(50,50,255),-1)
+         cv2.putText(frame, labels_dict[label], (x, y-10),cv2.FONT_HERSHEY_SIMPLEX,0.8,(255,255,255),2)
+
+        # MTCNN Implementation
+    # for result in faces:
+    #     x, y, w, h = result['box']
     #     sub_face_img=gray[y:y+h, x:x+w]
     #     resized=cv2.resize(sub_face_img,(48,48))
     #     normalize=resized/255.0
     #     reshaped=np.reshape(normalize, (1, 48, 48, 1))
     #     result=model.predict(reshaped)
     #     label=np.argmax(result, axis=1)[0]
-    #     print(label)
+    #     # print(label)
     #     cv2.rectangle(frame, (x,y), (x+w, y+h), (0,0,255), 1)
     #     cv2.rectangle(frame,(x,y),(x+w,y+h),(50,50,255),2)
     #     cv2.rectangle(frame,(x,y-40),(x+w,y),(50,50,255),-1)
     #     cv2.putText(frame, labels_dict[label], (x, y-10),cv2.FONT_HERSHEY_SIMPLEX,0.8,(255,255,255),2)
-
-        # MTCNN Implementation
-    for result in faces:
-        x, y, w, h = result['box']
-        sub_face_img=gray[y:y+h, x:x+w]
-        resized=cv2.resize(sub_face_img,(48,48))
-        normalize=resized/255.0
-        reshaped=np.reshape(normalize, (1, 48, 48, 1))
-        result=model.predict(reshaped)
-        label=np.argmax(result, axis=1)[0]
-        # print(label)
-        cv2.rectangle(frame, (x,y), (x+w, y+h), (0,0,255), 1)
-        cv2.rectangle(frame,(x,y),(x+w,y+h),(50,50,255),2)
-        cv2.rectangle(frame,(x,y-40),(x+w,y),(50,50,255),-1)
-        cv2.putText(frame, labels_dict[label], (x, y-10),cv2.FONT_HERSHEY_SIMPLEX,0.8,(255,255,255),2)
-        
+    frame = cv2.resize(frame, (1400,1000), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
     cv2.imshow("Frame",frame)
     k=cv2.waitKey(1)
     if k==ord('q'):
