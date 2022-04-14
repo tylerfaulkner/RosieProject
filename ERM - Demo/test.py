@@ -28,6 +28,8 @@ while True:
          reshaped=np.reshape(normalize, (1, 48, 48, 1))
          result=model.predict(reshaped)
          label=np.argmax(result, axis=1)[0]
+         # ind = np.argpartition(a, -3)[-3:]
+         # first, second, third = ind[0], ind[1], ind[3]
          cv2.rectangle(frame, (x,y), (x+w, y+h), (0,0,255), 1)
          cv2.rectangle(frame,(x,y),(x+w,y+h),(50,50,255),2)
          cv2.rectangle(frame,(x,y-40),(x+w,y),(50,50,255),-1)
@@ -47,7 +49,7 @@ while True:
     #     cv2.rectangle(frame,(x,y),(x+w,y+h),(50,50,255),2)
     #     cv2.rectangle(frame,(x,y-40),(x+w,y),(50,50,255),-1)
     #     cv2.putText(frame, labels_dict[label], (x, y-10),cv2.FONT_HERSHEY_SIMPLEX,0.8,(255,255,255),2)
-    frame = cv2.resize(frame, (1400,1000), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
+    frame = cv2.resize(frame, (700,500), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
     cv2.imshow("Frame",frame)
     k=cv2.waitKey(1)
     if k==ord('q'):
