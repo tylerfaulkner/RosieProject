@@ -1,6 +1,6 @@
 Author: Tyler Faulkner
 
-Currently Work Using Python Version 3.6
+Currently Working Using Python Version 3.6
 
 Creating Virtual Enviroment:
 
