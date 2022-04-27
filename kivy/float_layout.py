@@ -23,33 +23,23 @@ Window.toggle_fullscreen()
 class CamApp(App):
 
     def build(self):
-        self.img1=Image(size_hint=(0.7, 1.0))
-        layout = BoxLayout(orientation='vertical')
-        topRow = BoxLayout(orientation='horizontal', size_hint=(1.0, 0.8))
-        bottomRow = BoxLayout(orientation='horizontal', size_hint=(1.0, 0.2))
+        self.img1=Image(pos=(-280, 145))
+        layout = FloatLayout()
 
+        layout.add_widget(self.img1)
+        info = Label(text='Right', font_size='40sp', pos=(1280, 0), size_hint=(0.3, 0.6))
+        layout.add_widget(info)
 
-        layout.add_widget(topRow)
-        layout.add_widget(bottomRow)
+        title = Label(text='Emotional Recognition Project', font_size='40sp', pos=(0, 10), size_hint=(0.9, 0.25))
+        layout.add_widget(title)
 
-        #topRow.add_widget(Label(text='Left', font_size='40sp', size_hint=(0.2, 1.0)))
-        topRow.add_widget(self.img1)
-        box_info = BoxLayout(size_hint=(0.28, 0.91))
-        info = Label(text='Right', font_size='40sp', size_hint=(0.3, 1.0))
-        box_info.add_widget(info)
-        topRow.add_widget(box_info)
-
-        title = Label(text='Emotional Recognition Project', font_size='40sp')
-        bottomRow.add_widget(Label(text='Emotional Recognition Project', font_size='40sp'))
-        #opencv2 stuffs
         self.capture = cv2.VideoCapture(0)
-        #cv2.namedWindow("CV2 Image")
         Clock.schedule_interval(self.update, 1.0/33.0)
 
-        with bottomRow.canvas.before:
+        with title.canvas.before:
             Color(0, 1, 0, 1)  # green; colors range from 0-1 instead of 0-255
-            bottomRow.rect = Rectangle(size=bottomRow.size,
-                                  pos=bottomRow.pos)
+            title.rect = Rectangle(size=title.size,
+                                  pos=title.pos)
         with info.canvas.before:
             Color(0,1,0,1)
             info.rect = Rectangle(size=info.size,pos=info.pos)
@@ -59,7 +49,7 @@ class CamApp(App):
             instance.rect.size = instance.size
 
         # listen to size and position changes
-        bottomRow.bind(pos=update_rect, size=update_rect)
+        title.bind(pos=update_rect, size=update_rect)
         info.bind(pos=update_rect, size=update_rect)
         return layout
 
