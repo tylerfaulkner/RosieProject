@@ -15,7 +15,7 @@ import cv2
 from kivy.core.window import Window
 from kivy.graphics import Color, Rectangle
 
-Window.clearcolor = (115/225, 29/225, 38/225, 1)
+Window.clearcolor = (115/255, 29/255, 38/255, 1)
 Window.minimum_height = 720
 Window.minimum_width = 1280
 Window.toggle_fullscreen()
@@ -25,23 +25,26 @@ class CamApp(App):
     def build(self):
         self.img1=Image(pos=(-280, 145))
         layout = FloatLayout()
-
+        logo = Image(pos=(-680, 450), color=(1,1,1,0.5), source='rosielogo.png')
         layout.add_widget(self.img1)
-        info = Label(text='Right', font_size='40sp', pos=(1280, 0), size_hint=(0.3, 0.6))
+        layout.add_widget(logo)
+        info = Label(text="This project was created by the Rosie team for Data Science Practicum.  This project is a culmination of over 1000 hours of model training."
+                          +"This was made possible only through the power of Rosie.\n\nThis project was completed in 2022. The members of the Team included Emma Straszewski, Nick Dang, Tyler Faulkner, Nigel Nelson, and Michael Salgado.",
+                     font_size='38sp', pos=(1350, 324), size_hint=(0.27, 0.667), text_size=(480, 715), valign='center', halign='left')
         layout.add_widget(info)
 
-        title = Label(text='Emotional Recognition Project', font_size='40sp', pos=(0, 10), size_hint=(0.9, 0.25))
+        title = Label(text='Emotional Recognition Project', font_size='120sp', pos=(40, 20), size_hint=(0.951, 0.26))
         layout.add_widget(title)
 
         self.capture = cv2.VideoCapture(0)
         Clock.schedule_interval(self.update, 1.0/33.0)
 
         with title.canvas.before:
-            Color(0, 1, 0, 1)  # green; colors range from 0-1 instead of 0-255
+            Color(4/255, 6/255, 4/255, 1)  # green; colors range from 0-1 instead of 0-255
             title.rect = Rectangle(size=title.size,
                                   pos=title.pos)
         with info.canvas.before:
-            Color(0,1,0,1)
+            Color(4/255,6/255,4/255,1)
             info.rect = Rectangle(size=info.size,pos=info.pos)
 
         def update_rect(instance, value):
