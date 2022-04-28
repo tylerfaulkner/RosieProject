@@ -3,10 +3,15 @@ import numpy as np
 import time
 import tensorflow as tf
 from tensorflow.python.keras.utils import multi_gpu_utils
-from keras.models import load_model
+from tensorflow.keras.models import load_model
+# from keras.models import load_model
 
 # Loading emotion detection model
-model=load_model('../models/ENetB0_E30_B64_ImageNet.h5', compile=True)
+# model=load_model('../models/ENetB0_E30_B64_ImageNet.h5', compile=True)
+model=load_model('../models/ENetB0_6Class_ValAcc6583')
+# model=load_model('../models/ENetB0_6Class_ValAcc6583.h5', compile=True)
+
+
 # model = load_model('../models/google_trained3')
 
 # Setting video capture device
@@ -18,8 +23,8 @@ configFile = "../models/deploy.prototxt.txt"
 net = cv2.dnn.readNetFromCaffe(configFile, modelFile)
 
 # Setting labels dictionary
-labels_dict={0:'Angry',1:'Contempt',2:'Disgust',3:'Fear',4:'Happy',5:'Neutral',6:'Sad',7:'Surprise'}
-# labels_dict={0:'Angry',1:'Fear',2:'Happy',3:'Neutral',4:'Sad',5:'Surprise'}
+# labels_dict={0:'Angry',1:'Contempt',2:'Disgust',3:'Fear',4:'Happy',5:'Neutral',6:'Sad',7:'Surprise'}
+labels_dict={0:'Angry',1:'Fear',2:'Happy',3:'Neutral',4:'Sad',5:'Surprise'}
 
 while True:
     start = time.time()
@@ -51,12 +56,11 @@ while True:
 
             # If face sub image is not empty, resize and reshape into numpy array
             # to pass into input list
-            if np.any(sub_face_img):
+            if sub_face_img.shape[0] != 0 and sub_face_img.shape[1] != 0:
                 resized = cv2.resize(sub_face_img, (224, 224))
                 reshaped = np.reshape(resized, (1, 224, 224, 3))
                 input_list.append((reshaped, (x, y, x1, y1)))
 
-    # print(f"Number of faces: {len(input_list)}")
     # Check if input list is not empty
     if input_list:
         # Creating numpy array of each face sub image from input list
@@ -65,7 +69,11 @@ while True:
         # Check if faces_list is not empty
         if np.any(faces_list):
             # Pass in tensor of faces into model for predictions
-            result = model.predict(tf.convert_to_tensor(np.squeeze(faces_list, axis=1), dtype=tf.float16))
+            # result = model.predict(tf.convert_to_tensor(np.squeeze(faces_list, axis=1), dtype=tf.float16))
+            dataset = tf.data.Dataset.from_tensors(tf.convert_to_tensor(np.squeeze(faces_list, axis=1), dtype=tf.float16))
+            result = model.predict(dataset)
+
+            # result = model.predict(np.squeeze(faces_list, axis=1).astype(np.float16))
 
             # For loop number of predictions
             for i in range(len(result)):
@@ -79,7 +87,8 @@ while True:
                 cv2.rectangle(frame, (x, y), (x1, y1), (0, 0, 255), 2)
 
                 # Drawing text for current emotion
-                font_size = ((x1-x) * 0.0047)
+                scaling_font_size = ((x1-x) * 0.0047)
+                font_size = scaling_font_size if scaling_font_size >= 0.5 else 0.5
                 text_width = cv2.getTextSize(labels_dict[label], cv2.FONT_HERSHEY_SIMPLEX, font_size, 4)[0]
                 rectangle_mid = int((x1 - x) / 2)
                 cv2.putText(frame, labels_dict[label], (((rectangle_mid + x) - (text_width[0] // 2)), y - 10), cv2.FONT_HERSHEY_SIMPLEX, font_size, (0, 0, 0), 4)
@@ -88,6 +97,7 @@ while True:
 
     end = time.time()
     print(f"inference time: {round(end - start, 2)} seconds")
+    # print(f"FPS: {round(1//(end - start), 2)}")
     cv2.imshow("Frame",frame)
     k=cv2.waitKey(1)
     if k==ord('q'):
