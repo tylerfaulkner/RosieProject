@@ -3,11 +3,13 @@ import numpy as np
 import time
 import math
 from keras.models import load_model
+from tensorflow.keras.models import load_model
+
 
 
 model=load_model('../models/ENetB0_E30_B64_ImageNet.h5')
 
-video=cv2.VideoCapture(1)
+video=cv2.VideoCapture(0)
 
 modelFile = "../models/res10_300x300_ssd_iter_140000.caffemodel"
 configFile = "../models/deploy.prototxt.txt"
@@ -56,7 +58,7 @@ while True:
 
             except Exception as e:
                 print(str(e))
-    frame = cv2.resize(frame, (1920, 1080), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
+    # frame = cv2.resize(frame, (1920, 1080), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
     cv2.imshow("Frame",frame)
     k=cv2.waitKey(1)
     if k==ord('q'):

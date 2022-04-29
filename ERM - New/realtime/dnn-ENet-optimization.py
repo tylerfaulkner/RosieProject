@@ -8,9 +8,8 @@ from tensorflow.keras.models import load_model
 
 # Loading emotion detection model
 # model=load_model('../models/ENetB0_E30_B64_ImageNet.h5', compile=True)
-model=load_model('../models/ENetB0_6Class_ValAcc6583')
-# model=load_model('../models/ENetB0_6Class_ValAcc6583.h5', compile=True)
-
+# model=load_model('../models/ENetB0_6Class_ValAcc6583')
+model=load_model('../models/ENetB0_6Class_ValAcc5780.h5')
 
 # model = load_model('../models/google_trained3')
 
