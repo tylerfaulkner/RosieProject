@@ -30,10 +30,13 @@ modelFile = "./models/res10_300x300_ssd_iter_140000.caffemodel"
 configFile = "./models/deploy.prototxt.txt"
 net = cv2.dnn.readNetFromCaffe(configFile, modelFile)
 
-model=load_model('./models/ENetB0_E30_B64_ImageNet.h5')
+#model=load_model('./models/ENetB0_E30_B64_ImageNet.h5')
 
 
 labels_dict={0:'Angry',1:'Contempt',2:'Disgust',3:'Fear',4:'Happy',5:'Neutral',6:'Sad',7:'Surprise'}
+
+class MyFloatLayout(FloatLayout):
+    pass
 
 class CamApp(App):
 
@@ -42,10 +45,12 @@ class CamApp(App):
         self.capture = cv2.VideoCapture(0)
 
     def build(self):
-        self.stresstest()
+        #self.stresstest()
         self.img1=Image(pos=(-280, 145))
-        layout = FloatLayout()
+        layout = MyFloatLayout()
         logo = Image(pos=(-680, 450), color=(1,1,1,0.5), source='rosielogo.png')
+        ermlogo = Image(pos=(-80, 5), color=(1,1,1,1), size_hint=(0.29,0.29), source='logo.png')
+        #layout.add_widget(ermlogo)
         layout.add_widget(self.img1)
         layout.add_widget(logo)
         info = Label(text="This project was created by the Rosie team for Data Science Practicum.  This project is a culmination of over 1000 hours of model training. "
@@ -53,26 +58,13 @@ class CamApp(App):
                      font_size='38sp', pos=(1350, 324), size_hint=(0.27, 0.667), text_size=(480, 715), valign='center', halign='left')
         layout.add_widget(info)
 
-        title = Label(text='Emotional Recognition Project', font_size='120sp', pos=(40, 20), size_hint=(0.951, 0.26))
+        title = Label(text='Rosie Emotional Recognition Project', font_size='90sp', pos=(140, -380))
         layout.add_widget(title)
+
 
         Clock.schedule_interval(self.update, 1.0/33.0)
 
-        with title.canvas.before:
-            Color(4/255, 6/255, 4/255, 1)  # green; colors range from 0-1 instead of 0-255
-            title.rect = Rectangle(size=title.size,
-                                  pos=title.pos)
-        with info.canvas.before:
-            Color(4/255,6/255,4/255,1)
-            info.rect = Rectangle(size=info.size,pos=info.pos)
-
-        def update_rect(instance, value):
-            instance.rect.pos = instance.pos
-            instance.rect.size = instance.size
-
-        # listen to size and position changes
-        title.bind(pos=update_rect, size=update_rect)
-        info.bind(pos=update_rect, size=update_rect)
+        layout.add_widget(ermlogo)
         return layout
 
     def stresstest(self):
@@ -164,7 +156,7 @@ class CamApp(App):
                     # result = model.predict(tf.convert_to_tensor(np.squeeze(faces_list, axis=1), dtype=tf.float16))
                     dataset = tf.data.Dataset.from_tensors(
                         tf.convert_to_tensor(np.squeeze(faces_list, axis=1), dtype=tf.float16))
-                    result = model.predict(dataset)
+                    result = []#model.predict(dataset)
 
                     # result = model.predict(np.squeeze(faces_list, axis=1).astype(np.float16))
 
