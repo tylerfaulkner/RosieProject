@@ -17,17 +17,11 @@
 #
 ####
 
-
-
 # Path to container
 container="/data/containers/msoe-tensorflow-20.07-tf2-py3.sif"
 
-
-
 # Command to run inside container
-command="python trainENetB3.py"
-
-
+command="python EfficientNet_Hyperparam_Tuning.py"
 
 # Execute singularity container on node.
 singularity exec --nv -B /data:/data ${container} /usr/local/bin/nvidia_entrypoint.sh ${command}
