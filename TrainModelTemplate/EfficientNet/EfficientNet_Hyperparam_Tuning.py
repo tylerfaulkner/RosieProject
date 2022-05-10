@@ -1,15 +1,10 @@
+# Used to perform a hyper parameter search for optimal values
 
 # Uncomment below if unable to import "keras_tuner"
 #%pip install keras-tuner --upgrade
 import keras_tuner as kt
-
 import tensorflow as tf
-from tensorflow.python.eager import context
-import matplotlib.pyplot as plt
 import pandas as pd
-import numpy as np
-import scipy.io as sio
-import os
 from tensorflow.keras.utils import multi_gpu_model
 from tensorflow.python.keras.applications.efficientnet import EfficientNetB0
 from tensorflow.python.client import device_lib
