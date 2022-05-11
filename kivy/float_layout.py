@@ -30,7 +30,7 @@ modelFile = "./models/res10_300x300_ssd_iter_140000.caffemodel"
 configFile = "./models/deploy.prototxt.txt"
 net = cv2.dnn.readNetFromCaffe(configFile, modelFile)
 
-#model=load_model('./models/ENetB0_E30_B64_ImageNet.h5')
+model=load_model('./models/ENetB0_E30_B64_ImageNet.h5')
 
 
 labels_dict={0:'Angry',1:'Contempt',2:'Disgust',3:'Fear',4:'Happy',5:'Neutral',6:'Sad',7:'Surprise'}
@@ -156,7 +156,7 @@ class CamApp(App):
                     # result = model.predict(tf.convert_to_tensor(np.squeeze(faces_list, axis=1), dtype=tf.float16))
                     dataset = tf.data.Dataset.from_tensors(
                         tf.convert_to_tensor(np.squeeze(faces_list, axis=1), dtype=tf.float16))
-                    result = []#model.predict(dataset)
+                    result = model.predict(dataset)
 
                     # result = model.predict(np.squeeze(faces_list, axis=1).astype(np.float16))
 
