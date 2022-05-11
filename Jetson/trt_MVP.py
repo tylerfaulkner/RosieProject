@@ -1,20 +1,16 @@
-port pandas as pd
-import shutil
-import uuid
+# import pandas as pd
+# import shutil
+# import uuid
 
- 
 import tensorflow as tf
-from tensorflow.keras.applications.resnet50 import ResNet50, preprocess_input
-from tensorflow.python.compiler.tensorrt import trt_convert as trt
 from tensorflow.python.saved_model import signature_constants, tag_constants
-from tensorflow.python.framework import convert_to_constants
-from tensorflow.keras.models import load_model
+
 
 import cv2
 import numpy as np
-import time
-import math
-from tensorflow.keras.models import load_model
+# import time
+# import math
+# from tensorflow.keras.models import load_model
 
 trt_model_dir = f"./trt_models"
 
@@ -53,8 +49,7 @@ while True:
             try:
                 resized = cv2.resize(sub_face_img, (224, 224))
                 reshaped = np.reshape(resized, (1, 224, 224, 3))
-             
-                
+
                 tensor = tf.convert_to_tensor(reshaped)
                 labeling = infer(tensor)
                 label = labeling['dense_1'].numpy().argmax()

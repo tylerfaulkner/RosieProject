@@ -4,14 +4,11 @@ import time
 import tensorflow as tf
 from tensorflow.python.keras.utils import multi_gpu_utils
 from tensorflow.keras.models import load_model
-# from keras.models import load_model
 
 # Loading emotion detection model
 # model=load_model('../models/ENetB0_E30_B64_ImageNet.h5', compile=True)
 # model=load_model('../models/ENetB0_6Class_ValAcc6583')
 model=load_model('../models/ENetB0_6Class_ValAcc5780.h5')
-
-# model = load_model('../models/google_trained3')
 
 # Setting video capture device
 video=cv2.VideoCapture(0)
@@ -92,11 +89,9 @@ while True:
                 rectangle_mid = int((x1 - x) / 2)
                 cv2.putText(frame, labels_dict[label], (((rectangle_mid + x) - (text_width[0] // 2)), y - 10), cv2.FONT_HERSHEY_SIMPLEX, font_size, (0, 0, 0), 4)
                 cv2.putText(frame, labels_dict[label], (((rectangle_mid + x) - (text_width[0] // 2)), y - 10), cv2.FONT_HERSHEY_SIMPLEX, font_size, (255, 255, 255), 2)
-    # frame = cv2.resize(frame, (1366, 1080), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
 
     end = time.time()
     print(f"inference time: {round(end - start, 2)} seconds")
-    # print(f"FPS: {round(1//(end - start), 2)}")
     cv2.imshow("Frame",frame)
     k=cv2.waitKey(1)
     if k==ord('q'):
