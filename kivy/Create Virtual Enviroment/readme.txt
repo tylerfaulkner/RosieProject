@@ -1,6 +1,7 @@
 Author: Tyler Faulkner
 
 Currently Working Using Python Version 3.6
+Tensorflow only support on 64-bit python
 
 Creating Virtual Enviroment:
 
@@ -12,6 +13,9 @@ Creating Virtual Enviroment:
 
 		a.	Powershell should now have (kivy_tensorflow_venv) before the path in powershell
 		(kivy_tensorflow_venv) PS C:\Users\faulknert\rosieproject\kivy>
+		
+		b.	Upgrade to the latest version of pip
+		python -m pip install --upgrade pip
 
 	3.	Install all dependencies from the requirements.txt
 	Python -m pip install -r requirements.txt
